@@ -109,6 +109,7 @@ RUN         apt-get update \
            && if [[ $NWCHEM_TARGET == "LINUX" ]]; then apt-get -y purge libopenblas-dev; fi \
            && useradd -c 'NWChem user' -m -d /opt/nwchem -s /bin/bash nwchem \
 	   && chown -R nwchem /opt/nwchem && chgrp -R nwchem /opt/nwchem \
+	   && chmod -R 755 /opt/nwchem \
 	   && du -sh /opt/nwchem \
 	   && du -sk /opt/nwchem/*|sort -n \
 	   && dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
