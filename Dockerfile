@@ -76,8 +76,8 @@ RUN         apt-get update \
 	    && rm -f nvcc.out && nvcc -V >& nvcc.out && cat nvcc.out && rm nvcc.out \
             && echo "**** start nwchem cloning *****" \
             && cd /opt; git clone --depth 1  https://github.com/nwchemgit/nwchem.git  \
-            && git checkout tags/v7.0.2-release \
-            && cd nwchem/src \
+            && cd nwchem && git checkout tags/v7.0.2-release \
+            && cd src \
 #set NWCHEM_TARGET
             &&  . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET \
 #fix openblas cross-compilation
