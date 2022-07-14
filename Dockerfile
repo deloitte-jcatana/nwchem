@@ -47,6 +47,13 @@ ENV         FFIELD=amber  \
             SPCE=${NWCHEM_TOP}/src/data/solvents/spce.rst  \
             CHARMM_S=${NWCHEM_TOP}/src/data/charmm_s/  \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/  \
+            USE_F90_ALLOCATABLE=1
+            USE_OPENACC_TRPDRV=1
+            NWCHEM_LINK_CUDA=1
+            MA_USE_CUDA_MEM=1
+            CUDA=nvcc
+            CUDA_FLAGS="-arch sm_70 "
+            CUDA_ARCH="-arch sm70"
             CUDA_VERSION_MAJOR=11 \
             PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/bin:/opt/nwchem/bin \
             LD_LIBRARY_PATH=/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/lib64 \
@@ -86,7 +93,7 @@ RUN         apt-get update \
             &&  export PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/bin:$PATH \
             &&  export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/lib:$LD_LIBRARY_PATH \
             && cd /opt; rm -rf nwchem || true; git clone --depth 1  https://github.com/nwchemgit/nwchem.git  \
-            && cd nwchem/ && git checkout tags/v7.0.2-release \
+            && cd nwchem/ && git checkout v7.0.2-release \
             && cd src \
 #set NWCHEM_TARGET 
             &&  . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET \
