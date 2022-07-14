@@ -24,7 +24,7 @@ COPY Dockerfile cache* /tmp/
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
-ARG         FC
+ARG         FC="nvfortran"
 ENV         NWCHEM_TOP="/opt/nwchem"
 ENV         FC=$FC
 ARG         NWCHEM_MODULES="all python " 
@@ -39,6 +39,11 @@ ARG 	    BUILD_SCALAPACK=1
 ARG 	    BLAS_SIZE=8
 ARG 	    SCALAPACK_SIZE=8
 ARG 	    USE_HWOPT=n 
+ARG PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/bin:/opt/nwchem/bin
+ARG LD_LIBRARY_PATH=/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/lib64
+ARG TCE_CUDA=Y
+ARG CUDA_LIBS="-L/usr/local/cuda/lib64 -lcudart"
+ARG CUDA_INCLUDE="-I. -I/usr/local/cuda/include"
 ENV         FFIELD=amber  \
             AMBER_1=${NWCHEM_TOP}/src/data/amber_s/  \
             AMBER_2=${NWCHEM_TOP}/src/data/amber_q/  \
@@ -47,6 +52,8 @@ ENV         FFIELD=amber  \
             SPCE=${NWCHEM_TOP}/src/data/solvents/spce.rst  \
             CHARMM_S=${NWCHEM_TOP}/src/data/charmm_s/  \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/  \
+            CUDA_VERSION_MAJOR=11
+            CUDA_VERSION_MINOR=6
 	    OMPI_MCA_btl_vader_single_copy_mechanism=none \
 	    OMP_NUM_THREADS=1 \
 	    COMEX_MAX_NB_OUTSTANDING=16 \
@@ -79,7 +86,8 @@ RUN         apt-get update \
             &&  export PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/bin:$PATH \
             &&  export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/lib:$LD_LIBRARY_PATH \
             && cd /opt; rm -rf nwchem || true; git clone --depth 1  https://github.com/nwchemgit/nwchem.git  \
-            && cd nwchem/src \
+            && cd nwchem/ && git checkout v7.0.2 \
+            && cd src \
 #set NWCHEM_TARGET 
             &&  . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET \
 #fix openblas cross-compilation
