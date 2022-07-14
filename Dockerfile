@@ -39,11 +39,6 @@ ARG 	    BUILD_SCALAPACK=1
 ARG 	    BLAS_SIZE=8
 ARG 	    SCALAPACK_SIZE=8
 ARG 	    USE_HWOPT=n 
-ARG PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/bin:/opt/nwchem/bin
-ARG LD_LIBRARY_PATH=/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/lib64
-ARG TCE_CUDA=Y
-ARG CUDA_LIBS="-L/usr/local/cuda/lib64 -lcudart"
-ARG CUDA_INCLUDE="-I. -I/usr/local/cuda/include"
 ENV         FFIELD=amber  \
             AMBER_1=${NWCHEM_TOP}/src/data/amber_s/  \
             AMBER_2=${NWCHEM_TOP}/src/data/amber_q/  \
@@ -53,10 +48,15 @@ ENV         FFIELD=amber  \
             CHARMM_S=${NWCHEM_TOP}/src/data/charmm_s/  \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/  \
             CUDA_VERSION_MAJOR=11 \
+            PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/bin:/opt/nwchem/bin \
+            LD_LIBRARY_PATH=/usr/local/cuda-"$CUDA_VERSION_MAJOR"."$CUDA_VERSION_MINOR"/lib64 \
+            TCE_CUDA=Y \
+            CUDA_LIBS="-L/usr/local/cuda/lib64 -lcudart" \
+            CUDA_INCLUDE="-I. -I/usr/local/cuda/include" \
             CUDA_VERSION_MINOR=6 \
-	    OMPI_MCA_btl_vader_single_copy_mechanism=none \
-	    OMP_NUM_THREADS=1 \
-	    COMEX_MAX_NB_OUTSTANDING=16 \
+	        OMPI_MCA_btl_vader_single_copy_mechanism=none \
+	        OMP_NUM_THREADS=1 \
+	        COMEX_MAX_NB_OUTSTANDING=16 \
             PATH=$PATH:/opt/nwchem/bin
 #get NWCHEM_TARGET
 SHELL ["/bin/bash","-c"]
@@ -67,7 +67,7 @@ RUN . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET
 #one single ugly command to reduce docker size
 RUN         apt-get update \
             && apt-get -y upgrade \
-            && apt-get install -y  rsync python3-dev gfortran libopenmpi-dev openmpi-bin  make curl unzip cmake git file wget tar bzip2 bc \
+            && apt-get install -y gnupg2 rsync python3-dev gfortran libopenmpi-dev openmpi-bin  make curl unzip cmake git file wget tar bzip2 bc \
             && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin \
             && mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600 \
             && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub \
@@ -86,7 +86,7 @@ RUN         apt-get update \
             &&  export PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/bin:$PATH \
             &&  export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/lib:$LD_LIBRARY_PATH \
             && cd /opt; rm -rf nwchem || true; git clone --depth 1  https://github.com/nwchemgit/nwchem.git  \
-            && cd nwchem/ && git checkout v7.0.2 \
+            && cd nwchem/ && git checkout tags/v7.0.2-release \
             && cd src \
 #set NWCHEM_TARGET 
             &&  . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET \
