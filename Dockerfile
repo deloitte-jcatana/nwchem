@@ -24,7 +24,7 @@ COPY Dockerfile cache* /tmp/
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
-ARG         FC
+ARG         FC="nvfortran"
 ENV         NWCHEM_TOP="/opt/nwchem"
 ENV         FC=$FC
 ARG         NWCHEM_MODULES="all python " 
@@ -36,8 +36,8 @@ ARG             USE_MPIF=y
 ARG             USE_MPIF4=y 
 ARG 	    BUILD_OPENBLAS=1
 ARG 	    BUILD_SCALAPACK=1
-ARG 	    BLAS_SIZE=8
-ARG 	    SCALAPACK_SIZE=8
+ARG 	    BLAS_SIZE=4
+ARG 	    SCALAPACK_SIZE=4
 ARG 	    USE_HWOPT=n 
 ENV         FFIELD=amber  \
             AMBER_1=${NWCHEM_TOP}/src/data/amber_s/  \
