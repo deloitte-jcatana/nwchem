@@ -93,7 +93,7 @@ RUN         apt-get update \
             &&  export PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/bin:$PATH \
             &&  export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_"$arch"/"$nverdot"/compilers/lib:$LD_LIBRARY_PATH \
             && cd /opt; rm -rf nwchem || true; git clone --depth 1  https://github.com/nwchemgit/nwchem.git  \
-            && cd nwchem/ && git checkout v7.0.2-release \
+            && cd nwchem/ && git fetch --tags && git checkout v7.0.2-release \
             && cd src \
 #set NWCHEM_TARGET 
             &&  . /tmpfile; echo "NWCHEM_TARGET is " $NWCHEM_TARGET \
