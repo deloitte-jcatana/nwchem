@@ -47,6 +47,7 @@ ENV         FFIELD=amber  \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/  \
             GA_RELEASE_NO="5.8.1" \
             BLAS_SIZE=4 \
+            USE_64TO32=y \
             SCALAPACK_SIZE=4 \
             CM_SIZEOF_F77_DOUBLE=8 \
             CM_SIZEOF_F77_REAL=4 \
