@@ -45,6 +45,7 @@ ENV         FFIELD=amber  \
             SPCE=${NWCHEM_TOP}/src/data/solvents/spce.rst  \
             CHARMM_S=${NWCHEM_TOP}/src/data/charmm_s/  \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/  \
+            GA_RELEASE_NO="v5.8.1" \
             BLAS_SIZE=4 \
             SCALAPACK_SIZE=4 \
             CM_SIZEOF_F77_DOUBLE=8 \
